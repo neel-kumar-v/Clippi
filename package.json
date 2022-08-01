@@ -18,6 +18,7 @@
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"@tauri-apps/cli": "^1.0.5",
+		"@types/jquery": "^3.5.14",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
 		"autoprefixer": "^10.4.8",
@@ -36,6 +37,7 @@
 		"vite": "^3.0.0"
 	},
 	"dependencies": {
+		"jquery": "^3.6.0",
 		"tw-elements": "^1.0.0-alpha12"
 	},
 	"type": "module"

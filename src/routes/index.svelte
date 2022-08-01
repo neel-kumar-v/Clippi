@@ -1,6 +1,10 @@
 <script lang="ts">
+  import Modal from './components/Modal.svelte';
+
   import { fade, scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
+  import * as j$ from 'jquery'
+
   let visible = false;
   
   let links: string[] = new Array()
@@ -27,6 +31,10 @@
     }
     
     
+  }
+
+  let rewriteText = async(element: string) => {
+    j$("rename-modal").prop("aria-modal")
   }
 
 
@@ -67,7 +75,6 @@
 </script>
 
 <main>
-  <div class="">
     {#if visible}
       <div class="popover"
       in:fade="{{duration: 250}}"
@@ -75,14 +82,19 @@
         Link copied!
       </div>
     {/if}
-    <h1 class="font-serif font-extrabold">Clipboard Keeper</h1>
+    <nav>
+      <h1 class="font-serif font-extrabold m-3 p-1">Clippi</h1>
 
-    <div class="card">
-      <button on:click={readClipboard} class="clipboard-entry">
-        What do I have copied?
-      </button>
-      
-    </div>
+      <div class="card">
+        <button on:click={readClipboard} class="clipboard-entry" title="Add link">
+          What do I have copied?
+        </button>
+        
+      </div>
+    </nav>
+    
+
+    <Modal />
 
 
     <div class="entry-container">
@@ -93,7 +105,7 @@
           out:scale="{{duration: 250}}"
           in:scale="{{duration: 250}}">
           <span class="mx-3 mb-3">
-            <a href="https://{element}" target="_blank" rel="noreferrer noopener">{element}</a>
+            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener">{element}</a>
           </span>
           <br>
 
@@ -115,8 +127,5 @@
         </figure>
       {/each}
     </div>
-  </div>
-  
-
   
 </main>
