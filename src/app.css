@@ -33,7 +33,7 @@
     @apply text-blue-700
   }
   main {
-    @apply items-center justify-center text-center
+    @apply items-center justify-center text-center flex content-center
   }
   #app {
     @apply m-auto p-8 text-center items-center justify-center

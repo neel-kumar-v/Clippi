@@ -8,10 +8,8 @@ module.exports = {
         'blueprimary': '#646cff',
         'bluesecondary': '#535bf2'
 
-      }
+      },
     },
   },
-  plugins: [
-    require('tw-elements/dist/plugin')
-  ],
+  plugins: [],
 }
