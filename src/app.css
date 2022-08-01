@@ -21,13 +21,13 @@
 
 @layer components {
   body {
-    @apply m-0 flex place-items-center min-w-[320px] min-h-[100vh]
+    @apply my-0 flex-auto place-items-center min-w-[320px] min-h-[100vh]
   }
   h1 {
-    @apply text-[3.2em] leading-[1.1]
+    @apply mt-14 text-[3.2em] leading-[1.1]
   }
   a {
-    @apply font-medium text-blue-600
+    @apply font-medium 
   }
   a:hover {
     @apply text-blue-700
@@ -42,7 +42,7 @@
     @apply p-8
   }
   .clipboard-entry, .entry-container {
-    @apply rounded-lg border border-transparent py-2.5 px-5 text-base font-medium bg-chocolate cursor-pointer duration-[0.25s]
+    @apply rounded-lg border border-transparent py-2.5 px-5 text-base font-medium bg-chocolate cursor-pointer duration-[0.25s] 
   }
   .clipboard-entry:hover, .entry-container:hover {
     @apply border-blue-600
@@ -51,8 +51,9 @@
   .clipboard-entry:focus-visible, .entry-container:focus-visible {
     @apply outline outline-4  outline-white
   }
+
   .element {
-    @apply p-3 mb-5 bg-slate-700 rounded-full max-w-[50rem] max-h-[5em] font-sans truncate items-center justify-center text-center text-center
+    @apply p-3 mb-5 bg-slate-700 rounded-full max-w-[20rem] max-h-[5em] font-sans truncate items-center justify-center text-center 
   }
   .element-btn {
     @apply mx-1 rounded-full w-9 h-9 bg-zinc-800 hover:bg-zinc-900
@@ -62,7 +63,7 @@
   }
 
   .popover {
-    @apply card bg-zinc-800 rounded-full text-sm py-3 px-5 absolute my-auto text-center
+    @apply  bg-zinc-900 rounded-full text-sm py-2.5 px-5 absolute my-2 min-w-[11%] left-[45%] right-[50%] border-2 border-blue-600
   }
 
 }

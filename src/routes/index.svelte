@@ -34,7 +34,7 @@
 
     await navigator.clipboard.writeText(element);
     visible = true
-    await sleep(2)
+    await sleep(4)
     visible = false;
   }
 
@@ -68,10 +68,17 @@
 
 <main>
   <div class="">
+    {#if visible}
+      <div class="popover"
+      in:fade="{{duration: 250}}"
+      out:fade="{{duration: 250}}">
+        Link copied!
+      </div>
+    {/if}
     <h1 class="font-serif font-extrabold">Clipboard Keeper</h1>
 
     <div class="card">
-      <button on:click={readClipboard} class = "clipboard-entry">
+      <button on:click={readClipboard} class="clipboard-entry">
         What do I have copied?
       </button>
       
@@ -104,13 +111,7 @@
             <i class="fa-solid fa-trash"></i>
           </button> <!--delete button-->
 
-          {#if visible}
-            <div class="popover"
-            in:fade="{{duration: 250}}"
-            out:fade="{{duration: 250}}">
-              Link copied!
-            </div>
-          {/if}
+          
         </figure>
       {/each}
     </div>
