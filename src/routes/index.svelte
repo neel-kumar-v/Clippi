@@ -3,9 +3,10 @@
 
   import { fade, scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-  import * as j$ from 'jquery'
+  import j$ from 'jquery';
 
-  let visible = false;
+  let popoverVisible = false;
+  let buttonsVisible = false;
   
   let links: string[] = new Array()
   let clipboardText: string;
@@ -33,6 +34,11 @@
     
   }
 
+  let openModal = async() => {
+    j$("#rename-modal").toggleClass("invisible")
+    j$("#rename-modal").toggleClass("visible")
+  }
+
   let rewriteText = async(element: string) => {
     j$("rename-modal").prop("aria-modal")
   }
@@ -41,9 +47,9 @@
   let writeClipboard = async(element: string) => {
 
     await navigator.clipboard.writeText(element);
-    visible = true
+    popoverVisible = true
     await sleep(4)
-    visible = false;
+    popoverVisible = false;
   }
 
   async function sleep(seconds: number) {
@@ -75,7 +81,7 @@
 </script>
 
 <main>
-    {#if visible}
+    {#if popoverVisible}
       <div class="popover"
       in:fade="{{duration: 250}}"
       out:fade="{{duration: 250}}">
@@ -104,9 +110,17 @@
           animate:flip = "{{duration: 300}}"
           out:scale="{{duration: 250}}"
           in:scale="{{duration: 250}}">
-          <span class="mx-3 mb-3">
-            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener">{element}</a>
+          <span class="mb-3 max-w-[5em] truncate">
+            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="link">
+              {element}
+            </a>
           </span>
+          <button class="element-btn dropdown-btn">
+            <i class="fa-solid fa-caret-down"></i>
+          </button>
+
+          
+
           <br>
 
           <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
@@ -115,7 +129,7 @@
             <i class="fa-solid fa-clipboard"></i>
           </button> <!--copy link button-->
 
-          <button class="element-btn" title="Edit link">
+          <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
             <i class="fa-solid fa-pen"></i>
           </button> <!--edit button-->
 
