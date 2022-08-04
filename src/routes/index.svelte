@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Navbar from './components/Navbar.svelte';
 
   import Modal from './components/Modal.svelte';
 
@@ -85,9 +84,34 @@
     links = links
   }
 
-  while(true) {
+  // while(true) {
     
-  }
+  // }
+  let hoveringOverContainer;
+	
+	function dragStart(event: Event, itemIndex: any) {
+		// The data we want to make available when the element is dropped
+    // is the index of the item being dragged and
+    // the index of the basket from which it is leaving.
+    const data = itemIndex;
+    event.dataTransfer.setData('text/plain', JSON.stringify(data));
+	}
+	
+	function drop(event: any) {
+		event.preventDefault();
+    const json = event.dataTransfer.getData("text/plain");
+		const data = JSON.parse(json);
+		
+		// Remove the item from one basket.
+		// Splice returns an array of the deleted elements, just one in this case.
+		const [item] = links.splice(data.itemIndex, 1);
+		
+    // Add the item to the drop target basket.
+		links.push(item);
+		links = links;
+		
+		hoveringOverContainer = null;
+	}
 </script>
 
 <main>
@@ -99,35 +123,44 @@
       </div>
     {/if}
 
-    <Navbar />
+    <nav>
+        <h1 class="title">Clippi</h1>
+        <button on:click={readClipboard} class="clipboard-entry" title="Add link">
+          What do I have copied?
+        </button>
+    </nav>
     
 
-    <Modal />
 
+    <div class="entry-container"
+    on:drop="{event => drop(event)}">
 
-    <div class="entry-container">
       {#each links as element, i(element)}
         <figure 
           class="element"
           animate:flip = "{{duration: 300}}"
           out:scale="{{duration: 250}}"
-          in:scale="{{duration: 250}}">
-          <span class="mb-3 max-w-[5em] truncate">
-            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="link">
+          in:scale="{{duration: 250}}"
+          draggable={true}
+          on:dragstart={event => dragStart(event, basketIndex, itemIndex)}>
+          <span class="mb-3 truncate">
+            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
               {element}
             </a>
           </span>
-
-          <button class="element-btn dropdown-btn">
+          
+          <button class="element-btn dropdown-btn" on:click="{() => openDropdown(element)}">
             <i class="fa-solid fa-caret-down"></i>
           </button>
+          
+          <Modal />
+          
+          <!-- <br> -->
 
-          <br>
-
-          <!-- {#if buttonsVisible}  -->
+          {#if buttonsVisible} 
             <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
             title="Copy link"
-            data-bs-content="Link copied!" on:click={() => writeClipboard(element)}>
+            data-bs-content="Link copied!" on:click="{() => writeClipboard(element)}">
               <i class="fa-solid fa-clipboard"></i>
             </button> <!--copy link button-->
 
@@ -138,7 +171,7 @@
             <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
               <i class="fa-solid fa-trash"></i>
             </button> <!--delete button-->
-          <!-- {/if}  -->
+          {/if} 
         </figure>
       {/each}
     </div>
