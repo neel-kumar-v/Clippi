@@ -1,7 +1,5 @@
 <script lang="ts">
-  import Navbar from './components/Navbar.svelte';
-
-  import Modal from './components/Modal.svelte';
+  import Modal from './Modal.svelte';
 
   import { fade, scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
@@ -84,63 +82,16 @@
     
     links = links
   }
-
-  while(true) {
-    
-  }
 </script>
 
-<main>
-    {#if popoverVisible}
-      <div class="popover"
-      in:fade="{{duration: 250}}"
-      out:fade="{{duration: 250}}">
-        Link copied!
+<nav>
+      <div class="duotone"><h1 class="font-serif text-cream font-extrabold mx-0 mt-3 px-4 border-cream border-b-8">Clippi</h1></div>
+
+      <div class="card">
+        <button on:click={readClipboard} class="clipboard-entry" title="Add link">
+          What do I have copied?
+        </button>
+        
       </div>
-    {/if}
+    </nav>
 
-    <Navbar />
-    
-
-    <Modal />
-
-
-    <div class="entry-container">
-      {#each links as element, i(element)}
-        <figure 
-          class="element"
-          animate:flip = "{{duration: 300}}"
-          out:scale="{{duration: 250}}"
-          in:scale="{{duration: 250}}">
-          <span class="mb-3 max-w-[5em] truncate">
-            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="link">
-              {element}
-            </a>
-          </span>
-
-          <button class="element-btn dropdown-btn">
-            <i class="fa-solid fa-caret-down"></i>
-          </button>
-
-          <br>
-
-          <!-- {#if buttonsVisible}  -->
-            <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
-            title="Copy link"
-            data-bs-content="Link copied!" on:click={() => writeClipboard(element)}>
-              <i class="fa-solid fa-clipboard"></i>
-            </button> <!--copy link button-->
-
-            <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
-              <i class="fa-solid fa-pen"></i>
-            </button> <!--edit button-->
-
-            <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
-              <i class="fa-solid fa-trash"></i>
-            </button> <!--delete button-->
-          <!-- {/if}  -->
-        </figure>
-      {/each}
-    </div>
-  
-</main>
