@@ -88,7 +88,7 @@
     
   // }
   let hoveringOverContainer;
-  let itemInde
+  let itemIndex;
 	
 	function dragStart(event: Event, itemIndex: any) {
 		// The data we want to make available when the element is dropped

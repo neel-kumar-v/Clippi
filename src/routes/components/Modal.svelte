@@ -20,6 +20,10 @@
   
   let renameLink = async() => {
     j$("#linkname").text(String(j$("#renametext").val()));
+    j$("#renametext").val("")
+    // j$(this).siblings().each(() => {
+    //   if(j$(this).hasClass("linkname"))
+    // });
   }
 
   
