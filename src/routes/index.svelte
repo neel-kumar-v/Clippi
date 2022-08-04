@@ -88,6 +88,7 @@
     
   // }
   let hoveringOverContainer;
+  let itemInde
 	
 	function dragStart(event: Event, itemIndex: any) {
 		// The data we want to make available when the element is dropped
@@ -142,7 +143,7 @@
           out:scale="{{duration: 250}}"
           in:scale="{{duration: 250}}"
           draggable={true}
-          on:dragstart={event => dragStart(event, basketIndex, itemIndex)}>
+          on:dragstart={event => dragStart(EventTarget, itemIndex)}>
           <span class="mb-3 truncate">
             <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
               {element}
