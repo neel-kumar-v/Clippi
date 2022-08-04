@@ -6,8 +6,8 @@ module.exports = {
       colors: {
         'chocolate': '#1a1a1a',
         'blueprimary': '#646cff',
-        'bluesecondary': '#535bf2'
-
+        'bluesecondary': '#535bf2',
+        'cream': '#FEFBEA',
       },
     },
   },

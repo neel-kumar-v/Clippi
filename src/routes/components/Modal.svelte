@@ -17,7 +17,10 @@
     j$("#rename-modal").toggleClass("invisible")
     j$("#rename-modal").toggleClass("visible")
   }
-
+  
+  let renameLink = async() => {
+    j$("#linkname").text(String(j$("#renametext").val()));
+  }
 
   
 
@@ -74,8 +77,8 @@
                 </div>
               </div>
               <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <input type="submit" class="modal-btn border-transparent  bg-red-600 text-white hover:bg-red-700  focus:ring-red-500" value="Rename">
-                <button type="button" on:click="{() => openModal()}" class=" modal-btn mt-3 border-gray-300  bg-white text-gray-700 hover:bg-gray-50  focus:ring-indigo-500 sm:mt-0">Cancel</button>
+                <button type="button" on:click={() => {openModal(), renameLink()}} class="modal-btn border-transparent  bg-red-600 text-white hover:bg-red-700  focus:ring-red-500">Rename</button>
+                <button type="button" on:click={() => openModal()} class=" modal-btn mt-3 border-gray-300  bg-white text-gray-700 hover:bg-gray-50  focus:ring-indigo-500 sm:mt-0">Cancel</button>
               </div>
           </form>
           </div>

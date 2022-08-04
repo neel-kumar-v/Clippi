@@ -19,9 +19,29 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.duotone{
+  font-family: Roboto;
+  display: flex;
+  text-align:center;
+  background: #FEFBEA;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient( 0deg, #FEFBEA 0 50%, #1a1a1a 50% 100%);
+}
+
+.duotone h1{
+  margin-top: 5px;
+  font-size: 2em;
+  font-weight:bold;
+  color: transparent;
+  background: linear-gradient( 0deg, #1a1a1a 0 50%, #FEFBEA 50% 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
 @layer components {
   body {
-    @apply my-0 flex-auto place-items-center min-w-[320px] h-[100vh] min-h-[480px]
+    @apply m-0 flex-auto place-items-center min-w-[320px] h-[100vh] min-h-[480px] 
   }
   nav {
     @apply absolute overflow-hidden bg-chocolate mt-0 top-0 w-screen flex justify-between h-[6vh]
@@ -32,6 +52,9 @@
   h1 {
     @apply  text-[2em] leading-[1.1]
   }
+ 
+  
+  
   a {
     @apply font-medium 
   }
@@ -60,7 +83,7 @@
   }
 
   .element {
-    @apply p-3 mb-5 mr-10 bg-slate-700 rounded-full max-w-[20rem] max-h-[5em] font-sans  items-center justify-center text-center m-1
+    @apply p-3 mb-5 mr-10 bg-slate-700 rounded-full w-[20rem] max-h-[5em] font-sans  items-center justify-center text-center m-1
   }
   .element-btn {
     @apply mx-1 rounded-full w-9 h-9 bg-zinc-800 hover:bg-zinc-900
@@ -75,10 +98,10 @@
   }
 
   .dropdown-btn {
-   @apply inline-block bg-inherit mx-1 rounded-full w-[20%] h-9 hover:bg-zinc-800
+   @apply inline-block bg-inherit mx-1 pb-1 rounded-full w-[20%] h-6 w-4 hover:bg-zinc-800
   }
   .link {
-    @apply inline-block max-w-[12rem] truncate
+    @apply inline-block pl-4 max-w-[16rem] truncate
   }
 
   .invisible {
@@ -90,6 +113,7 @@
   }
 
 }
+
 
 
 /* @media (prefers-color-scheme: light) {

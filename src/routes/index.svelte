@@ -55,6 +55,10 @@
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))
   }
+
+  let openDropdown = async(element: string) => {
+    buttonsVisible = !buttonsVisible
+  }
   
   function truncateLink(link: string) : string {
     
@@ -89,7 +93,7 @@
       </div>
     {/if}
     <nav>
-      <h1 class="font-serif font-extrabold m-3 p-1">Clippi</h1>
+      <div class="duotone"><h1 class="font-serif text-cream font-extrabold mx-0 mt-3 px-4 border-cream border-b-8">Clippi</h1></div>
 
       <div class="card">
         <button on:click={readClipboard} class="clipboard-entry" title="Add link">
@@ -115,29 +119,28 @@
               {element}
             </a>
           </span>
+
           <button class="element-btn dropdown-btn">
             <i class="fa-solid fa-caret-down"></i>
           </button>
 
-          
-
           <br>
 
-          <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
-          title="Copy link"
-          data-bs-content="Link copied!" on:click={() => writeClipboard(element)}>
-            <i class="fa-solid fa-clipboard"></i>
-          </button> <!--copy link button-->
+          <!-- {#if buttonsVisible}  -->
+            <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
+            title="Copy link"
+            data-bs-content="Link copied!" on:click={() => writeClipboard(element)}>
+              <i class="fa-solid fa-clipboard"></i>
+            </button> <!--copy link button-->
 
-          <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
-            <i class="fa-solid fa-pen"></i>
-          </button> <!--edit button-->
+            <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
+              <i class="fa-solid fa-pen"></i>
+            </button> <!--edit button-->
 
-          <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
-            <i class="fa-solid fa-trash"></i>
-          </button> <!--delete button-->
-
-          
+            <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
+              <i class="fa-solid fa-trash"></i>
+            </button> <!--delete button-->
+          <!-- {/if}  -->
         </figure>
       {/each}
     </div>
