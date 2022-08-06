@@ -18,15 +18,16 @@
     j$("#rename-modal").toggleClass("visible")
   }
   
-  let renameLink = async() => {
-    j$("#linkname").text(String(j$("#renametext").val()));
-    j$("#renametext").val("")
-    // j$(this).siblings().each(() => {
-    //   if(j$(this).hasClass("linkname"))
-    // });
+  function renameLink(): void {
+    // alert(j$(this).siblings())
+    j$(this).parentsUntil('.element').children(".linkname").text(String(j$("renametext").val()));
+    j$("#renametext").val("");
+      // console.log("called")
+      // if(j$(this).hasClass("linkname")) {
+      //   this.text(String(j$("renametext").val()));
+      //   j$("renametext").val("");
+      // }
   }
-
-  
 
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))

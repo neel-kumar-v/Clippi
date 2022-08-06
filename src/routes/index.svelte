@@ -143,7 +143,7 @@
           out:scale="{{duration: 250}}"
           in:scale="{{duration: 250}}"
           draggable={true}
-          on:dragstart={event => dragStart(EventTarget, itemIndex)}>
+          on:dragstart={event => dragStart(e, itemIndex)}>
           <span class="mb-3 truncate">
             <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
               {element}
