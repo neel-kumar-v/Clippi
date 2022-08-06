@@ -1,16 +1,17 @@
 <script lang="ts">
 
-  import Modal from './components/Modal.svelte';
+  import Modal from './components/Modal.svelte'
 
-  import { fade, scale } from 'svelte/transition';
-	import { flip } from 'svelte/animate';
-  import j$ from 'jquery';
+  import { fade, scale } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
+  import j$ from 'jquery'
 
-  let popoverVisible = false;
-  let buttonsVisible = false;
+  let popoverVisible = false
+  let buttonsVisible: [boolean] = [false]
+  buttonsVisible.shift()
   
   let links: string[] = new Array()
-  let clipboardText: string;
+  let clipboardText: string
   
   const linkRegex: RegExp = new RegExp('https?:\/\/')
 
@@ -28,6 +29,7 @@
       clipboardText = truncateLink(clipboardText)
 
       links.push(clipboardText)
+      buttonsVisible.push(false)
       links = links
       
     }
@@ -50,15 +52,21 @@
     await navigator.clipboard.writeText(element);
     popoverVisible = true
     await sleep(4)
-    popoverVisible = false;
+    popoverVisible = false
   }
 
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))
   }
 
-  let openDropdown = async(element: string) => {
-    buttonsVisible = !buttonsVisible
+  let openDropdown = async(element: HTMLButtonElement, i: number) => {
+    buttonsVisible[i] = !buttonsVisible[i]
+    let parent = <HTMLButtonElement>element.parent()
+    if(buttonsVisible[i]) {
+
+    } else {
+
+    }
   }
   
   function truncateLink(link: string) : string {
@@ -115,6 +123,8 @@
 	}
 </script>
 
+<!-- svelte-ignore missing-declaration -->
+<!-- svelte-ignore missing-declaration -->
 <main>
     {#if popoverVisible}
       <div class="popover"
@@ -144,36 +154,37 @@
           in:scale="{{duration: 250}}"
           draggable={true}
           on:dragstart={event => dragStart(EventTarget, itemIndex)}>
-          <span class="mb-3 truncate">
-            <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
-              {element}
-            </a>
-          </span>
-          
-          <button class="element-btn dropdown-btn" on:click="{() => openDropdown(element)}">
-            <i class="fa-solid fa-caret-down"></i>
-          </button>
-          
-          <Modal />
-          
-          <!-- <br> -->
 
-          {#if buttonsVisible} 
-            <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
-            title="Copy link"
-            data-bs-content="Link copied!" on:click="{() => writeClipboard(element)}">
-              <i class="fa-solid fa-clipboard"></i>
-            </button> <!--copy link button-->
+            <span class="mb-3 truncate">
+              <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
+                {element}
+              </a>
+            </span>
+            
+            <button class="element-btn dropdown-btn" on:click="{() => openDropdown(this, i)}">
+              <i class="fa-solid fa-caret-down"></i>
+            </button>
+            
+            <Modal />
+            
+            <!-- <br> -->
 
-            <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
-              <i class="fa-solid fa-pen"></i>
-            </button> <!--edit button-->
+            {#if buttonsVisible[i] != undefined && buttonsVisible[i]} 
+              <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
+              title="Copy link"
+              data-bs-content="Link copied!" on:click="{() => writeClipboard(element)}">
+                <i class="fa-solid fa-clipboard"></i>
+              </button> <!--copy link button-->
 
-            <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
-              <i class="fa-solid fa-trash"></i>
-            </button> <!--delete button-->
-          {/if} 
-        </figure>
+              <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
+                <i class="fa-solid fa-pen"></i>
+              </button> <!--edit button-->
+
+              <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
+                <i class="fa-solid fa-trash"></i>
+              </button> <!--delete button-->
+            {/if} 
+          </figure>
       {/each}
     </div>
   
