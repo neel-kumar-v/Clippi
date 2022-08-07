@@ -3,9 +3,14 @@
 	import { flip } from 'svelte/animate';
   import j$ from 'jquery';
   let visible = false;
-  
   let links: string[] = new Array()
   let clipboardText: string;
+
+  export let i: number;
+  export let link: String;
+
+  $: j$(".linkname").text(String(j$("#renametext").val()));
+
   
 
   // let fillShape = () => {
@@ -16,17 +21,19 @@
   let openModal = async() => {
     j$("#rename-modal").toggleClass("invisible")
     j$("#rename-modal").toggleClass("visible")
+    j$("#renametext").val("");
   }
   
-  function renameLink(): void {
-    // alert(j$(this).siblings())
-    j$(this).parentsUntil('.element').children(".linkname").text(String(j$("renametext").val()));
-    j$("#renametext").val("");
-      // console.log("called")
-      // if(j$(this).hasClass("linkname")) {
-      //   this.text(String(j$("renametext").val()));
-      //   j$("renametext").val("");
-      // }
+  let renameLink = async(i: number) => {
+    // alert(j$(this).siblings())\
+    // console.log(j$("#renametext").val())
+    // console.log(j$(this).parentsUntil('.element').children(".linkname").children(".linkname").text())
+    // j$(this).parentsUntil('.element').children(".linkname").children(".linkname").text(String(j$("#renametext").val()));
+    // j$("#renametext").val("");
+    // jquery  -> ith element -> span -> linkname
+    // element[i]
+    // j$("#linkname").text(String(j$("#renametext").val()));
+    j$(".entry-container figure:nth-child(" + i + ")").children('span').children(".linkname").text(String(j$("#renametext").val()));
   }
 
   async function sleep(seconds: number) {
@@ -38,7 +45,7 @@
 
 <!-- This example requires Tailwind CSS v2.0+ -->
     
-    <div id="rename-modal" class="relative z-10 invisible" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="rename-modal" class="absolute z-10 invisible" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <!--
         Background backdrop, show/hide based on modal state.
     
@@ -76,13 +83,13 @@
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Rename - This will retain the same link</h3>
                     <div class="mt-2">
-                      <input type="text" name="renametext" id="renametext" class="text-black focus:border-blue-400 rounded-full outline">
+                      <input type="text" name="renametext" id="renametext" class="text-black focus:border-blue-400 rounded-full outline" value={link}>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" on:click={() => {openModal(), renameLink()}} class="modal-btn border-transparent  bg-red-600 text-white hover:bg-red-700  focus:ring-red-500">Rename</button>
+                <button type="button" on:click={() => {renameLink(i), openModal()}} class="modal-btn border-transparent  bg-red-600 text-white hover:bg-red-700  focus:ring-red-500">Rename</button>
                 <button type="button" on:click={() => openModal()} class=" modal-btn mt-3 border-gray-300  bg-white text-gray-700 hover:bg-gray-50  focus:ring-indigo-500 sm:mt-0">Cancel</button>
               </div>
           </form>

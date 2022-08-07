@@ -83,12 +83,16 @@
   }
 
   .element {
-    @apply p-3 mb-5 mr-10 bg-slate-700 rounded-full w-[20rem] max-h-[5em] font-sans  items-center justify-center text-center m-1
+    @apply p-3 pt-1.5 mb-5 mr-10 bg-slate-700 rounded-full 
+    min-w-[10rem] max-w-[20rem] max-h-[2.5em] font-sans  items-center justify-center text-center m-1 drop-shadow-md
   }
   .element-btn {
-    @apply mx-1 rounded-full w-9 h-9 bg-zinc-800 hover:bg-zinc-900
+    @apply mx-1 rounded-full w-9 h-9 bg-zinc-800 hover:bg-zinc-900 drop-shadow-sm
   }
 
+  .element-expanded {
+    @apply max-h-[5.5em]
+  }
   .popover {
     @apply  bg-zinc-900 rounded-full text-sm py-2.5 px-5 absolute my-2 min-w-[11%] left-[45%] right-[50%] top-[0%] bottom-[95%] border-2 border-blue-600 z-10
   }
@@ -98,7 +102,7 @@
   }
 
   .dropdown-btn {
-   @apply inline-block bg-inherit mx-1 pb-1 rounded-full w-[20%] h-6 w-4 hover:bg-zinc-800
+   @apply inline-block bg-inherit mx-1 pb-1 rounded-full w-[20%] h-[1em] w-4 hover:bg-zinc-800
   }
   .link {
     @apply inline-block pl-4 max-w-[16rem] truncate
