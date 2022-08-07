@@ -59,15 +59,6 @@
 
   let openDropdown = async(i: number) => {
     buttonsVisible[i] = !buttonsVisible[i]
-<<<<<<< Updated upstream
-=======
-    // let parent = <HTMLButtonElement>element.parent()
-    if(buttonsVisible[i]) {
-
-    } else {
-
-    }
->>>>>>> Stashed changes
   }
   
   function truncateLink(link: string) : string {
@@ -104,7 +95,7 @@
   let hoveringOverContainer;
   let itemIndex;
 	
-<<<<<<< Updated upstream
+
 	function dragStart(event: any, itemIndex: any) {
 		// The data we want to make available when the element is dropped
     // is the index of the item being dragged and
@@ -112,45 +103,31 @@
     const data = itemIndex;
     event.dataTransfer.setData('text/plain', JSON.stringify(data));
 	}
-=======
-	// function dragStart(event: Event, itemIndex: any) {
-	// 	// The data we want to make available when the element is dropped
-  //   // is the index of the item being dragged and
-  //   // the index of the basket from which it is leaving.
-  //   const data = itemIndex;
-  //   event.dataTransfer.setData('text/plain', JSON.stringify(data));
-	// }
->>>>>>> Stashed changes
+
 	
-	// function drop(event: any) {
-	// 	event.preventDefault();
-  //   const json = event.dataTransfer.getData("text/plain");
-	// 	const data = JSON.parse(json);
-		
-<<<<<<< Updated upstream
+	function drop(event: any) {
+		event.preventDefault();
+    const json = event.dataTransfer.getData("text/plain");
+		const data = JSON.parse(json);
 		// Remove the item from one basket.
 		// Splice returns an array of the deleted elements, just one in this case.
 		const [item] = links.splice(data.itemIndex, 1);
     const [itemHref] = linkHrefs.splice(data.itemIndex, 1)
-=======
-	// 	// Remove the item from one basket.
-	// 	// Splice returns an array of the deleted elements, just one in this case.
-	// 	const [item] = links.splice(data.itemIndex, 1);
->>>>>>> Stashed changes
+
 		
-  //   // Add the item to the drop target basket.
-	// 	links.push(item);
-	// 	links = links;
+    // Add the item to the drop target basket.
+		links.push(item);
+		links = links;
 		
-<<<<<<< Updated upstream
+
 		linkHrefs.push(item);
 		linkHrefs = linkHrefs;
 		hoveringOverContainer = null;
 	}
-=======
+
 	// 	hoveringOverContainer = null;
 	// }
->>>>>>> Stashed changes
+
 </script>
 
 <!-- svelte-ignore missing-declaration -->
@@ -183,11 +160,7 @@
           draggable={true}>
 
             <span class="mb-3 truncate">
-<<<<<<< Updated upstream
-              <a href="https://{linkHrefs[i]}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
-=======
-              <a href="https://{element}" target="_blank" id="linkname"  class="linkname link">
->>>>>>> Stashed changes
+              <a href="https://{linkHrefs[i]}" target="_blank" id="linkname"  class="linkname link">
                 {element}
               </a>
             </span>
