@@ -1,7 +1,5 @@
 <script lang="ts">
   import Navbar from './components/Navbar.svelte';
-
-
   import Modal from './components/Modal.svelte'
 
   import { fade, scale } from 'svelte/transition'
