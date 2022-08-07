@@ -1,13 +1,16 @@
 <script lang="ts">
+  import Popover from './components/Popover.svelte';
+
+  import Element from './components/Element.svelte';
+
   import Navbar from './components/Navbar.svelte';
   import Modal from './components/Modal.svelte'
 
-  import { fade, scale } from 'svelte/transition'
-	import { flip } from 'svelte/animate'
+
   import { setContext } from 'svelte';
   import j$ from 'jquery'
 
-  let popoverVisible = false
+  let copiedLinkPopoverVisible = false
   let buttonsVisible: [boolean] = [false]
   buttonsVisible.shift()
   
@@ -21,10 +24,14 @@
   let readClipboard = async() => {
     
     clipboardText = await navigator.clipboard.readText()
-    
-    if(linkRegex.test(clipboardText) && !links.includes(clipboardText)) {
 
+    let isLink: boolean = false
+    if(linkRegex.test(clipboardText)){
       clipboardText = truncateLink(clipboardText)
+      isLink = true
+    } 
+    
+    if(isLink && !links.includes(clipboardText) && !linkHrefs.includes(clipboardText)) {
 
       links.push(clipboardText)
       links = links
@@ -35,24 +42,30 @@
       buttonsVisible.push(false)
 
     }
-    
-    
+  }
+  setContext('read', { readClipboard })
+
+  function truncateLink(link: string) : string {
+    if(link.substring(0, 5) == "https") link = link.replace("https://", "") 
+    else link = link.replace("http://", "")
+    return link
   }
 
-  let openModal = async() => {
-    j$("#rename-modal").toggleClass("invisible")
-    j$("#rename-modal").toggleClass("visible")
+  let openModal = async(i: number) => {
+    console.log(i)
+    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("invisible")
+    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("visible")
   }
+  setContext('openModal', { openModal })
 
   let writeClipboard = async(element: string) => {
-    
     await navigator.clipboard.writeText(element);
-    popoverVisible = true
+    copiedLinkPopoverVisible = true
     await sleep(2)
-    popoverVisible = false
+    copiedLinkPopoverVisible = false
   }
+  setContext('write', { writeClipboard })
   
-  setContext('read', { readClipboard })
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))
   }
@@ -60,24 +73,11 @@
   let openDropdown = async(i: number) => {
     buttonsVisible[i] = !buttonsVisible[i]
   }
-  
-  function truncateLink(link: string) : string {
-    
-    if(link.substring(0, 5) == "https") link = link.replace("https://", "") 
-    else link = link.replace("http://", "")
+  setContext('openDropdown', { openDropdown})
 
-    // let linkEndingRegex = new RegExp('(com\/|org\/|net\/|co\...\/|us\/edu\/|io\/|gov\/)')
-    // if(linkEndingRegex.test(link)) {
-    //   const match = linkEndingRegex.exec(link)
-    //   console.log(match)
-    //   link = link.slice(0, linkEndingRegex.lastIndex)
-    //   console.log(link) 
-    // }
-
-    return link
-  }
   let removeEntry = (link: string) => {
     let index = links.indexOf(link)
+    console.log(index)
     if(index === 0){
       links.shift()
       linkHrefs.shift()
@@ -89,8 +89,16 @@
     
     links = links
     linkHrefs = linkHrefs
-
+    
   }
+  setContext('remove', { removeEntry })
+
+  let renameLink = (i: number, changedName: string)  => {
+    console.log(i)
+    links[i] = changedName
+    links = links
+  }
+  setContext('rename', { renameLink })
 
   let hoveringOverContainer;
   let itemIndex;
@@ -133,60 +141,16 @@
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore missing-declaration -->
 <main>
-    {#if popoverVisible}
-      <div class="popover"
-      in:fade="{{duration: 250}}"
-      out:fade="{{duration: 250}}">
-        Link copied!
-      </div>
+    {#if copiedLinkPopoverVisible}
+      <Popover notification="Link copied!"/>
     {/if}
 
     <Navbar />
-    
 
-
-    <div class="entry-container">
-
+    <div class="entry-container ">
       {#each links as element, i(element)}
-        <Modal 
-          i={i}
-          link={element}
-        />
-        <figure 
-          class="element"
-          
-          out:scale="{{duration: 250}}"
-          in:scale="{{duration: 250}}"
-          draggable={true}>
-
-            <span class="mb-3 truncate">
-              <a href="https://{linkHrefs[i]}" target="_blank" id="linkname"  class="linkname link">
-                {element}
-              </a>
-            </span>
-            
-            <button class="element-btn dropdown-btn" on:click="{() => openDropdown(i)}">
-              <i class="fa-solid fa-caret-down"></i>
-            </button>
-            
-            <br>
-
-            {#if buttonsVisible[i] != undefined && buttonsVisible[i]} 
-              <button tabindex="0" class="copy-btn element-btn" data-bs-toggle="popover" data-bs-trigger="focus"
-              title="Copy link"
-              data-bs-content="Link copied!" on:click="{() => writeClipboard(element)}">
-                <i class="fa-solid fa-clipboard"></i>
-              </button> <!--copy link button-->
-
-              <button class="element-btn" on:click="{() => openModal()}" title="Edit link">
-                <i class="fa-solid fa-pen"></i>
-              </button> <!--edit button-->
-
-              <button class="element-btn" on:click="{() => removeEntry(element)}" title="Remove link">
-                <i class="fa-solid fa-trash"></i>
-              </button> <!--delete button-->
-            {/if} 
-          </figure>
+        <Modal index={i} />
+        <Element linkHrefs={linkHrefs} i={i} element={element} buttonsVisible={buttonsVisible} />
       {/each}
     </div>
   
