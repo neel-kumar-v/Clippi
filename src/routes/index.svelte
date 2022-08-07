@@ -1,9 +1,12 @@
 <script lang="ts">
+  import Navbar from './components/Navbar.svelte';
+
 
   import Modal from './components/Modal.svelte'
 
   import { fade, scale } from 'svelte/transition'
 	import { flip } from 'svelte/animate'
+  import { setContext } from 'svelte';
   import j$ from 'jquery'
 
   let popoverVisible = false
@@ -11,14 +14,11 @@
   buttonsVisible.shift()
   
   let links: string[] = new Array()
+  let linkHrefs: string[] = new Array()
   let clipboardText: string
   
   const linkRegex: RegExp = new RegExp('https?:\/\/')
 
-  // let fillShape = () => {
-  //   this.children[0].classList.remove('fa-solid')
-  //   this.children[0].classList.add('fa-regular')
-  // }
  
   let readClipboard = async() => {
     
@@ -29,9 +29,13 @@
       clipboardText = truncateLink(clipboardText)
 
       links.push(clipboardText)
-      buttonsVisible.push(false)
       links = links
-      
+
+      linkHrefs.push(clipboardText)
+      linkHrefs = linkHrefs
+
+      buttonsVisible.push(false)
+
     }
     
     
@@ -42,31 +46,21 @@
     j$("#rename-modal").toggleClass("visible")
   }
 
-  let rewriteText = async(element: string) => {
-    j$("rename-modal").prop("aria-modal")
-  }
-
-
   let writeClipboard = async(element: string) => {
-
+    
     await navigator.clipboard.writeText(element);
     popoverVisible = true
-    await sleep(4)
+    await sleep(2)
     popoverVisible = false
   }
-
+  
+  setContext('read', { readClipboard })
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))
   }
 
-  let openDropdown = async(element: HTMLButtonElement, i: number) => {
+  let openDropdown = async(i: number) => {
     buttonsVisible[i] = !buttonsVisible[i]
-    let parent = <HTMLButtonElement>element.parent()
-    if(buttonsVisible[i]) {
-
-    } else {
-
-    }
   }
   
   function truncateLink(link: string) : string {
@@ -86,19 +80,24 @@
   }
   let removeEntry = (link: string) => {
     let index = links.indexOf(link)
-    if(index === 0) links.shift()
-    else links.splice(index, index)
+    if(index === 0){
+      links.shift()
+      linkHrefs.shift()
+    } 
+    else {
+      links.splice(index, index)
+      linkHrefs.splice(index, index)
+    }
     
     links = links
+    linkHrefs = linkHrefs
+
   }
 
-  // while(true) {
-    
-  // }
   let hoveringOverContainer;
   let itemIndex;
 	
-	function dragStart(event: Event, itemIndex: any) {
+	function dragStart(event: any, itemIndex: any) {
 		// The data we want to make available when the element is dropped
     // is the index of the item being dragged and
     // the index of the basket from which it is leaving.
@@ -114,11 +113,14 @@
 		// Remove the item from one basket.
 		// Splice returns an array of the deleted elements, just one in this case.
 		const [item] = links.splice(data.itemIndex, 1);
+    const [itemHref] = linkHrefs.splice(data.itemIndex, 1)
 		
     // Add the item to the drop target basket.
 		links.push(item);
 		links = links;
 		
+		linkHrefs.push(item);
+		linkHrefs = linkHrefs;
 		hoveringOverContainer = null;
 	}
 </script>
@@ -134,12 +136,7 @@
       </div>
     {/if}
 
-    <nav>
-        <h1 class="title">Clippi</h1>
-        <button on:click={readClipboard} class="clipboard-entry" title="Add link">
-          What do I have copied?
-        </button>
-    </nav>
+    <Navbar />
     
 
 
@@ -156,12 +153,12 @@
           on:dragstart={event => dragStart(EventTarget, itemIndex)}>
 
             <span class="mb-3 truncate">
-              <a href="https://{element}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
+              <a href="https://{linkHrefs[i]}" target="_blank" id="linkname" rel="noreferrer noopener"class="linkname link">
                 {element}
               </a>
             </span>
             
-            <button class="element-btn dropdown-btn" on:click="{() => openDropdown(this, i)}">
+            <button class="element-btn dropdown-btn" on:click="{() => openDropdown(i)}">
               <i class="fa-solid fa-caret-down"></i>
             </button>
             
