@@ -5,8 +5,8 @@
 </script>
 
 <div class="popover"
-  in:fade="{{duration: 250}}"
-  out:fade="{{duration: 250}}">
-    {notification}
-  </div>
+in:fade="{{duration: 250}}"
+out:fade="{{duration: 250}}">
+  {notification}
+</div>
 

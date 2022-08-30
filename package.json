@@ -37,6 +37,7 @@
 		"vite": "^3.0.0"
 	},
 	"dependencies": {
+		"daisyui": "^2.22.0",
 		"jquery": "^3.6.0",
 		"tw-elements": "^1.0.0-alpha12"
 	},

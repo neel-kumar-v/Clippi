@@ -15,7 +15,9 @@
   buttonsVisible.shift()
   
   let links: string[] = new Array()
+  let savedLinks: string[] = new Array()
   let linkHrefs: string[] = new Array()
+  let savedLinkHrefs: string[] = new Array()
   let clipboardText: string
   
   const linkRegex: RegExp = new RegExp('https?:\/\/')
@@ -35,9 +37,11 @@
 
       links.push(clipboardText)
       links = links
+      savedLinks = links
 
       linkHrefs.push(clipboardText)
       linkHrefs = linkHrefs
+      savedLinkHrefs = linkHrefs
 
       buttonsVisible.push(false)
 
@@ -51,21 +55,21 @@
     return link
   }
 
-  let openModal = async(i: number) => {
-    console.log(i)
-    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("invisible")
-    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("visible")
-  }
-  setContext('openModal', { openModal })
-
   let writeClipboard = async(element: string) => {
     await navigator.clipboard.writeText(element);
     copiedLinkPopoverVisible = true
     await sleep(2)
     copiedLinkPopoverVisible = false
   }
+  
   setContext('write', { writeClipboard })
   
+  let openModal = async(i: number) => {
+    console.log(i)
+    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("invisible")
+    j$("#rename-modal:nth-of-type(" + i + ")").toggleClass("visible")
+  }
+  setContext('openModal', { openModal })
   async function sleep(seconds: number) {
     return new Promise((resolve)=>setTimeout(resolve, seconds*1000))
   }
@@ -89,7 +93,8 @@
     
     links = links
     linkHrefs = linkHrefs
-    
+    savedLinks = links
+    savedLinkHrefs = linkHrefs
   }
   setContext('remove', { removeEntry })
 
@@ -97,6 +102,7 @@
     console.log(i)
     links[i] = changedName
     links = links
+    savedLinks = links
   }
   setContext('rename', { renameLink })
 
@@ -136,20 +142,30 @@
 	// 	hoveringOverContainer = null;
 	// }
 
+  let search = (search: string) => {
+
+    let searchResults = links.filter(word => word.includes("search"))
+    links = searchResults
+  }
+  let unsearch = () => {
+    let links = savedLinks
+  }
+
 </script>
 
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore missing-declaration -->
 <main>
+  
     {#if copiedLinkPopoverVisible}
       <Popover notification="Link copied!"/>
     {/if}
 
     <Navbar />
 
-    <div class="entry-container ">
+    <div class="entry-container">
       {#each links as element, i(element)}
-        <Modal index={i} />
+        <Modal index={i+1} />
         <Element linkHrefs={linkHrefs} i={i} element={element} buttonsVisible={buttonsVisible} />
       {/each}
     </div>
